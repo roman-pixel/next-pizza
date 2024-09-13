@@ -19,7 +19,6 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.441.0",
     "next": "14.2.10",
-    "prettier-plugin-sort-imports": "^1.8.6",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
@@ -27,6 +26,7 @@
     "vaul": "^0.9.2"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
