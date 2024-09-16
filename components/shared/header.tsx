@@ -25,7 +25,9 @@ export const Header: React.FC<Props> = ({ className }) => {
 					/>
 					<div>
 						<h1 className='text-2xl font-black uppercase'>Next Pizza</h1>
-						<p className='to-gray-400 text-sm leading-3'>вкусней уже некуда</p>
+						<p className='text-sm leading-3 text-gray-400'>
+							вкусней уже некуда
+						</p>
 					</div>
 				</div>
 
