@@ -1,13 +1,34 @@
+'use client';
+
 import React from 'react';
 
-import { CheckboxFiltersGroup, FilterCheckbox, RangeSlider, Title } from '.';
+import { useQueryFilters } from '@/hooks/use-query-filters';
+
+import { CheckboxFiltersGroup, RangeSlider, Title } from '.';
 import { Input } from '../ui';
+
+import { useFilters, useIngredients } from '@/hooks';
 
 interface Props {
 	className?: string;
 }
 
 export const Filters: React.FC<Props> = ({ className }) => {
+	const { ingredients, isloading } = useIngredients();
+	const filters = useFilters();
+
+	useQueryFilters(filters);
+
+	const items = ingredients.map(item => ({
+		value: String(item.id),
+		text: item.name
+	}));
+
+	const updatePrices = (prices: number[]) => {
+		filters.setPrices('priceFrom', prices[0]);
+		filters.setPrices('priceTo', prices[1]);
+	};
+
 	return (
 		<div className={className}>
 			<Title
@@ -17,16 +38,29 @@ export const Filters: React.FC<Props> = ({ className }) => {
 			/>
 
 			{/* TOP CHECKBOXES */}
-			<div className='flex flex-col gap-4'>
-				<FilterCheckbox
-					text='Можно собирать'
-					value='1'
-				/>
-				<FilterCheckbox
-					text='Новинки'
-					value='2'
-				/>
-			</div>
+			<CheckboxFiltersGroup
+				name='pizzaTypes'
+				title='Тип теста'
+				className='mb-4'
+				selectedValues={filters.pizzaTypes}
+				onClickCheckbox={filters.setPizzaTypes}
+				items={[
+					{ text: 'Тонкое', value: '1' },
+					{ text: 'Традиционное', value: '2' }
+				]}
+			/>
+			<CheckboxFiltersGroup
+				name='sizes'
+				title='Размеры'
+				className='mb-4'
+				selectedValues={filters.sizes}
+				onClickCheckbox={filters.setSizes}
+				items={[
+					{ text: '25 см', value: '25' },
+					{ text: '30 см', value: '30' },
+					{ text: '35 см', value: '35' }
+				]}
+			/>
 
 			{/* PRICE SETTINGS */}
 			<div className='mt-5 border-y border-y-neutral-100 py-6 pb-7'>
@@ -37,13 +71,18 @@ export const Filters: React.FC<Props> = ({ className }) => {
 						placeholder='0'
 						min={0}
 						max={1000}
-						defaultValue={0}
+						value={String(filters.prices.priceFrom)}
+						onChange={e =>
+							filters.setPrices('priceFrom', Number(e.target.value))
+						}
 					/>
 					<Input
 						type='number'
 						placeholder='1000'
 						min={100}
 						max={1000}
+						value={String(filters.prices.priceTo)}
+						onChange={e => filters.setPrices('priceTo', Number(e.target.value))}
 					/>
 				</div>
 
@@ -51,7 +90,11 @@ export const Filters: React.FC<Props> = ({ className }) => {
 					min={0}
 					max={1000}
 					step={10}
-					value={[0, 1000]}
+					value={[
+						filters.prices.priceFrom || 0,
+						filters.prices.priceTo || 1000
+					]}
+					onValueChange={updatePrices}
 				/>
 			</div>
 
@@ -59,84 +102,13 @@ export const Filters: React.FC<Props> = ({ className }) => {
 			<CheckboxFiltersGroup
 				className='mt-5'
 				title='Ингредиенты:'
+				name='ingredients'
 				limit={6}
-				defaultItems={[
-					{
-						text: 'Сырный соус',
-						value: '1'
-					},
-					{
-						text: 'Моццарелла',
-						value: '2'
-					},
-					{
-						text: 'Чеснок',
-						value: '3'
-					},
-					{
-						text: 'Солённые огурчики',
-						value: '4'
-					},
-					{
-						text: 'Красный лук',
-						value: '5'
-					},
-					{
-						text: 'Томаты',
-						value: '6'
-					}
-				]}
-				// TODO: change this
-				items={[
-					{
-						text: 'Сырный соус',
-						value: '1'
-					},
-					{
-						text: 'Моццарелла',
-						value: '2'
-					},
-					{
-						text: 'Чеснок',
-						value: '3'
-					},
-					{
-						text: 'Солённые огурчики',
-						value: '4'
-					},
-					{
-						text: 'Красный лук',
-						value: '5'
-					},
-					{
-						text: 'Томаты',
-						value: '6'
-					},
-					{
-						text: 'Сырный соус',
-						value: '1'
-					},
-					{
-						text: 'Моццарелла',
-						value: '2'
-					},
-					{
-						text: 'Чеснок',
-						value: '3'
-					},
-					{
-						text: 'Солённые огурчики',
-						value: '4'
-					},
-					{
-						text: 'Красный лук',
-						value: '5'
-					},
-					{
-						text: 'Томаты',
-						value: '6'
-					}
-				]}
+				defaultItems={items.slice(0, 6)}
+				items={items}
+				isLoading={isloading}
+				onClickCheckbox={filters.setSelectedIngredients}
+				selectedValues={filters.selectedIngredients}
 			/>
 		</div>
 	);
