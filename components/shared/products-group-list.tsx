@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 
 interface Props {
 	title: string;
+	// TODO: fix
 	items: any[];
 	listClassName?: string;
 	categoryId: number;
@@ -49,14 +50,19 @@ export const ProductsGroupList: React.FC<Props> = ({
 				className='mb-5 font-extrabold'
 			/>
 
-			<div className={cn('grid grid-cols-3 gap-[60px]', listClassName)}>
+			<div
+				className={cn(
+					'grid grid-cols-1 gap-[50px] md:grid-cols-2 lg:grid-cols-3',
+					listClassName
+				)}
+			>
 				{items.map(product => (
 					<ProductCard
 						key={product.id}
 						id={product.id}
 						name={product.name}
 						imageUrl={product.imageUrl}
-						price={product.items[0].price}
+						price={product.variants[0].price}
 					/>
 				))}
 			</div>
