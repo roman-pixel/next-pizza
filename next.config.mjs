@@ -5,6 +5,10 @@ const nextConfig = {
 			{
 				protocol: 'https',
 				hostname: 'media.dodostatic.net' // для картинок с dodo
+			},
+			{
+				protocol: 'https',
+				hostname: 'cdn.dodostatic.net' // для картинок с dodo
 			}
 		]
 	}

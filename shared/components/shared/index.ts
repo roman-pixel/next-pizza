@@ -14,5 +14,6 @@ export { SearchInput } from './search-input';
 export { PizzaImage } from './pizza-image';
 export { GroupVariants } from './group-variants';
 export { ChooseProductForm } from './choose-product-form';
+export { Ingredient } from './ingredient';
 
 export * from './modals';

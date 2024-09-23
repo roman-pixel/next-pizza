@@ -4,7 +4,7 @@ import React from 'react';
 
 import { cn } from '@/shared/lib/utils';
 
-type Variant = {
+export type Variant = {
 	name: string;
 	value: string;
 	disabled?: boolean;
@@ -14,7 +14,7 @@ interface Props {
 	items: readonly Variant[];
 	defaultValue?: string;
 	onClick?: (value: Variant['value']) => void;
-	selectedValue?: string;
+	value?: string;
 	className?: string;
 }
 
@@ -22,7 +22,7 @@ export const GroupVariants: React.FC<Props> = ({
 	items,
 	defaultValue,
 	onClick,
-	selectedValue,
+	value,
 	className
 }) => {
 	return (
@@ -39,7 +39,7 @@ export const GroupVariants: React.FC<Props> = ({
 					className={cn(
 						'flex h-[30px] flex-1 cursor-pointer items-center justify-center rounded-3xl px-5 text-sm transition-all duration-300',
 						{
-							'bg-white shadow': item.value === selectedValue,
+							'bg-white shadow': item.value === value,
 							'pointer-events-none text-gray-500 opacity-50': item.disabled
 						}
 					)}

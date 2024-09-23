@@ -36,8 +36,8 @@ export const PizzaImage: React.FC<Props> = ({ src, alt, size, className }) => {
 				/>
 			</div>
 
-			<div className='absolute left-1/2 top-1/2 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-gray-200' />
-			<div className='absolute left-1/2 top-1/2 h-[370px] w-[370px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-gray-200' />
+			<div className='absolute left-1/2 top-1/2 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-gray-200' />
+			<div className='absolute left-1/2 top-1/2 h-[370px] w-[370px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-gray-200' />
 		</div>
 	);
 };

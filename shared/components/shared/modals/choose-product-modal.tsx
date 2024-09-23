@@ -17,7 +17,6 @@ interface Props {
 
 export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
 	const router = useRouter();
-	console.log(product);
 	const isPizzaForm = Boolean(product.variants[0].pizzaType);
 
 	return (
@@ -27,14 +26,15 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
 		>
 			<DialogContent
 				className={cn(
-					'min-h-[500px] w-[1060px] max-w-[1060px] overflow-hidden bg-white p-0'
+					'min-h-[550px] w-[1060px] max-w-[1060px] overflow-hidden bg-white p-0'
 				)}
 			>
 				{isPizzaForm ? (
 					<ChoosePizzaForm
 						imageUrl={product.imageUrl}
 						name={product.name}
-						ingredients={[]}
+						ingredients={product.ingredients}
+						variants={product.variants}
 					/>
 				) : (
 					<ChooseProductForm
