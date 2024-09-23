@@ -26,13 +26,18 @@ export const ProductCard: React.FC<Props> = ({
 	return (
 		<div className={cn(className)}>
 			<Link href={`/product/${id}`}>
-				<div className='flex h-[260px] justify-center rounded-lg bg-secondary p-6'>
-					<Image
-						width={215}
-						height={215}
-						src={imageUrl}
-						alt={name}
-					/>
+				<div
+					className='relative top-0 flex justify-center rounded-lg p-6 transition-all duration-200 ease-out hover:top-[3px]'
+					title={name}
+				>
+					<div className={cn('relative h-60 w-60')}>
+						<Image
+							fill
+							sizes='100%'
+							src={imageUrl}
+							alt={name}
+						/>
+					</div>
 				</div>
 
 				<Title
