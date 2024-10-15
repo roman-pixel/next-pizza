@@ -9,18 +9,9 @@ import {
 } from '.';
 import { Button } from '../ui';
 
-import {
-	PizzaSize,
-	PizzaType,
-	mapPizzaType,
-	pizzaTypes
-} from '@/shared/constants/pizza';
+import { PizzaSize, PizzaType, pizzaTypes } from '@/shared/constants/pizza';
 import { usePizzaOptions } from '@/shared/hooks';
-import {
-	calcTotalPizzaPrice,
-	getAvailablePizzaSizes,
-	getPizzaDetails
-} from '@/shared/lib';
+import { getPizzaDetails } from '@/shared/lib';
 import { cn } from '@/shared/lib/utils';
 
 interface Props {
@@ -28,16 +19,21 @@ interface Props {
 	name: string;
 	ingredients: Ingredient[];
 	variants: ProductItem[];
-	onClickAddCart?: VoidFunction;
+	loading?: boolean;
+	onSubmit: (itemId: number, ingredients: number[]) => void;
 	className?: string;
 }
 
+/**
+ * Choose PIZZA Form
+ */
 export const ChoosePizzaForm: React.FC<Props> = ({
 	imageUrl,
 	name,
 	ingredients,
 	variants,
-	onClickAddCart,
+	loading,
+	onSubmit,
 	className
 }) => {
 	const {
@@ -46,6 +42,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 		type,
 		setType,
 		availableSizes,
+		currentItemId,
 		addIngredient,
 		selectedIngredients
 	} = usePizzaOptions(variants);
@@ -59,8 +56,9 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 	);
 
 	const handleClickAdd = () => {
-		onClickAddCart?.();
-		console.log({ size, type, ingredients: selectedIngredients });
+		if (currentItemId) {
+			onSubmit(currentItemId, Array.from(selectedIngredients));
+		}
 	};
 
 	return (
@@ -108,6 +106,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 				</div>
 
 				<Button
+					loading={loading}
 					className='mt-10 h-[55px] w-full rounded-[18px] px-10 text-base'
 					onClick={handleClickAdd}
 					disabled={!totalPrice}

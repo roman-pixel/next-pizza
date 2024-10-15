@@ -20,18 +20,34 @@ import { getCartItemDetails } from '@/shared/lib';
 import { useCartStore } from '@/shared/store';
 
 export const CartDrawer: React.FC<PropsWithChildren> = ({ children }) => {
-	const { totalAmount, fetchCartItems, items } = useCartStore(state => ({
-		totalAmount: state.totalAmount,
-		fetchCartItems: state.fetchCartItems,
-		items: state.items
-	}));
+	const [
+		totalAmount,
+		fetchCartItems,
+		updateItemQuantity,
+		removeCartItem,
+		items,
+		loading
+	] = useCartStore(state => [
+		state.totalAmount,
+		state.fetchCartItems,
+		state.updateItemQuantity,
+		state.removeCartItem,
+		state.items,
+		state.loading
+	]);
 
 	useEffect(() => {
 		fetchCartItems();
 	}, []);
 
-	console.log(items, 'items');
-	console.log(totalAmount, 'totalAmount');
+	const onClickCountButton = (
+		id: number,
+		quantity: number,
+		type: 'plus' | 'minus'
+	) => {
+		const newQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
+		updateItemQuantity(id, newQuantity);
+	};
 
 	return (
 		<Sheet>
@@ -44,15 +60,18 @@ export const CartDrawer: React.FC<PropsWithChildren> = ({ children }) => {
 				</SheetHeader>
 
 				<div className='-mx-6 mt-5 flex-1 overflow-auto'>
-					<div className='mb-2'>
-						{items.map(item => (
+					{items.map(item => (
+						<div
+							key={item.id}
+							className='mb-2'
+						>
 							<CartDrawerItem
-								key={item.id}
 								id={item.id}
 								imageUrl={item.imageUrl}
 								name={item.name}
 								price={item.price}
 								quantity={item.quantity}
+								loading={loading}
 								details={
 									item.pizzaSize && item.pizzaType
 										? getCartItemDetails(
@@ -62,9 +81,13 @@ export const CartDrawer: React.FC<PropsWithChildren> = ({ children }) => {
 											)
 										: ''
 								}
+								onClickCountButton={type =>
+									onClickCountButton(item.id, item.quantity, type)
+								}
+								onClickRemove={() => removeCartItem(item.id)}
 							/>
-						))}
-					</div>
+						</div>
+					))}
 				</div>
 
 				<SheetFooter className='-mx-6 bg-white p-8'>

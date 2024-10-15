@@ -8,16 +8,21 @@ import { CountButton } from './count-button';
 import { cn } from '@/shared/lib/utils';
 
 interface Props extends CartItemProps {
+	onClickCountButton?: (type: 'plus' | 'minus') => void;
+	onClickRemove?: () => void;
+	loading?: boolean;
 	className?: string;
 }
 
 export const CartDrawerItem: React.FC<Props> = ({
-	id,
 	imageUrl,
 	name,
 	price,
 	quantity,
 	details,
+	loading,
+	onClickCountButton,
+	onClickRemove,
 	className
 }) => {
 	return (
@@ -34,15 +39,20 @@ export const CartDrawerItem: React.FC<Props> = ({
 
 				<div className='flex items-center justify-between'>
 					<CountButton
-						onClick={type => console.log(type)}
+						loading={loading}
+						onClick={onClickCountButton}
 						value={quantity}
 					/>
 
 					<div className='flex items-center gap-3'>
 						<CartItem.Price value={price} />
 						<Trash2Icon
-							className='cursor-pointer text-gray-400 hover:text-gray-600'
+							className={cn('cursor-pointer text-gray-400', {
+								'cursor-default text-gray-300': loading,
+								'hover:text-gray-600': !loading
+							})}
 							size={16}
+							onClick={loading ? undefined : onClickRemove}
 						/>
 					</div>
 				</div>

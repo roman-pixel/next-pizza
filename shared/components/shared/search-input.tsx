@@ -66,7 +66,7 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 					onChange={e => setSearchQuery(e.target.value)}
 				/>
 
-				{products.length && (
+				{products.length > 0 && (
 					<div
 						className={cn(
 							'invisible absolute z-30 w-full rounded-xl bg-white py-2 opacity-0 shadow-md transition-all duration-200',
