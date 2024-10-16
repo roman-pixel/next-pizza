@@ -10,7 +10,6 @@ import { cn } from '@/shared/lib/utils';
 interface Props extends CartItemProps {
 	onClickCountButton?: (type: 'plus' | 'minus') => void;
 	onClickRemove?: () => void;
-	loading?: boolean;
 	className?: string;
 }
 
@@ -20,13 +19,19 @@ export const CartDrawerItem: React.FC<Props> = ({
 	price,
 	quantity,
 	details,
-	loading,
+	disabled,
 	onClickCountButton,
 	onClickRemove,
 	className
 }) => {
 	return (
-		<div className={cn('flex gap-6 bg-white p-5', className)}>
+		<div
+			className={cn(
+				'flex gap-6 bg-white p-5 transition-all duration-300',
+				{ 'pointer-events-none opacity-60 grayscale': disabled },
+				className
+			)}
+		>
 			<CartItem.Image src={imageUrl} />
 
 			<div className='flex-1'>
@@ -39,7 +44,6 @@ export const CartDrawerItem: React.FC<Props> = ({
 
 				<div className='flex items-center justify-between'>
 					<CountButton
-						loading={loading}
 						onClick={onClickCountButton}
 						value={quantity}
 					/>
@@ -47,12 +51,9 @@ export const CartDrawerItem: React.FC<Props> = ({
 					<div className='flex items-center gap-3'>
 						<CartItem.Price value={price} />
 						<Trash2Icon
-							className={cn('cursor-pointer text-gray-400', {
-								'cursor-default text-gray-300': loading,
-								'hover:text-gray-600': !loading
-							})}
+							className={cn('cursor-pointer text-gray-400')}
 							size={16}
-							onClick={loading ? undefined : onClickRemove}
+							onClick={onClickRemove}
 						/>
 					</div>
 				</div>
