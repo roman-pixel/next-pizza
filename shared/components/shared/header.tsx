@@ -9,12 +9,18 @@ import { Button } from '../ui';
 import { cn } from '@/shared/lib/utils';
 
 interface Props {
+	hasSearch?: boolean;
+	hasCart?: boolean;
 	className?: string;
 }
 
-export const Header: React.FC<Props> = ({ className }) => {
+export const Header: React.FC<Props> = ({
+	hasSearch = true,
+	hasCart = true,
+	className
+}) => {
 	return (
-		<div className={cn('border border-b', className)}>
+		<div className={cn('border-b', className)}>
 			<Container className='flex items-center justify-between py-8'>
 				{/* LEFT PART */}
 				<Link href='/'>
@@ -34,9 +40,11 @@ export const Header: React.FC<Props> = ({ className }) => {
 					</div>
 				</Link>
 
-				<div className='mx-10 flex-1'>
-					<SearchInput />
-				</div>
+				{hasSearch && (
+					<div className='mx-10 flex-1'>
+						<SearchInput />
+					</div>
+				)}
 
 				{/* RIGHT PART */}
 				<div className='flex items-center gap-3'>
@@ -48,9 +56,11 @@ export const Header: React.FC<Props> = ({ className }) => {
 						<span>Войти</span>
 					</Button>
 
-					<div>
-						<CartButton />
-					</div>
+					{hasCart && (
+						<div>
+							<CartButton />
+						</div>
+					)}
 				</div>
 			</Container>
 		</div>
