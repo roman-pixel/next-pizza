@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { PaymentCallbackData } from '@/@types/yookassa';
 import { prisma } from '@/prisma/prisma-client';
-import { OrderSuccessTemplate } from '@/shared/components';
+import { OrderCancelTemplate, OrderSuccessTemplate } from '@/shared/components';
 import { sendEmail } from '@/shared/lib';
 import { CartItemDTO } from '@/shared/services/dto/cart.dto';
 
@@ -41,7 +41,11 @@ export async function POST(req: NextRequest) {
 				OrderSuccessTemplate({ orderId: order.id, items })
 			);
 		} else {
-			// TODO: SEND FAILED EMAIL
+			await sendEmail(
+				order.email,
+				'Next Pizza / Ваш заказ отменен ❌',
+				OrderCancelTemplate({ orderId: order.id, items })
+			);
 		}
 	} catch (err) {
 		console.error('[CHECKOUT_CALLBACK] Error', err);
