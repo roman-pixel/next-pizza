@@ -47,6 +47,8 @@ export async function POST(req: NextRequest) {
 				OrderCancelTemplate({ orderId: order.id, items })
 			);
 		}
+
+		return NextResponse.json('Success', { status: 200 });
 	} catch (err) {
 		console.error('[CHECKOUT_CALLBACK] Error', err);
 
