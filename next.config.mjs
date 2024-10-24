@@ -11,7 +11,8 @@ const nextConfig = {
 				hostname: 'cdn.dodostatic.net' // для картинок с dodo
 			}
 		]
-	}
+	},
+	reactStrictMode: false
 };
 
 export default nextConfig;

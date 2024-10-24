@@ -1,7 +1,11 @@
-import { ArrowRight, ShoppingCart, User } from 'lucide-react';
+'use client';
+
+import { User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 import { CartButton, Container, SearchInput } from '.';
 import { Button } from '../ui';
@@ -19,6 +23,29 @@ export const Header: React.FC<Props> = ({
 	hasCart = true,
 	className
 }) => {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout;
+
+		if (searchParams.has('paid')) {
+			timeoutId = setTimeout(() => {
+				toast.success('Заказ оплачён! Информация отправлена на почту');
+
+				const newUrl = new URL(window.location.href);
+				newUrl.searchParams.delete('paid');
+
+				// Обновляем URL без перезагрузки страницы
+				router.replace(newUrl.toString(), undefined);
+			}, 200);
+		}
+
+		return () => {
+			clearTimeout(timeoutId);
+		};
+	}, []);
+
 	return (
 		<div className={cn('border-b', className)}>
 			<Container className='flex items-center justify-between py-8'>
