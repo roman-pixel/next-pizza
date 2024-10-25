@@ -4,9 +4,10 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { ProductForm } from '..';
+import { DialogContent } from '../../ui/dialog';
 
 import { ProductWithRelations } from '@/@types/prisma';
-import { Dialog, DialogContent } from '@/shared/components/ui';
+import { Dialog } from '@/shared/components/ui';
 import { cn } from '@/shared/lib/utils';
 
 interface Props {
