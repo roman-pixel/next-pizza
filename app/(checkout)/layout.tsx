@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { Container, Header } from '@/shared/components/shared';
 
 export const metadata = {
@@ -13,11 +15,13 @@ export default function CheckoutLayout({
 	return (
 		<main className='min-h-screen bg-[#f4f1ee]'>
 			<Container>
-				<Header
-					hasSearch={false}
-					hasCart={false}
-					className='border-b-gray-200'
-				/>
+				<Suspense>
+					<Header
+						hasSearch={false}
+						hasCart={false}
+						className='border-b-gray-200'
+					/>
+				</Suspense>
 				{children}
 			</Container>
 		</main>
