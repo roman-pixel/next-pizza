@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const AddressInput: React.FC<Props> = ({ uid, onChange }) => {
-	const token = process.env.NEXT_PUBLIC_DADATA_API_KEY as string;
+	const token = process.env.DADATA_API_KEY as string;
 
 	return (
 		<AddressSuggestions
