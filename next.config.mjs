@@ -12,6 +12,10 @@ const nextConfig = {
 			},
 			{
 				protocol: 'https',
+				hostname: 'cdn.inappstory.ru' // для картинок stories с dodo
+			},
+			{
+				protocol: 'https',
 				hostname: 'avatars.githubusercontent.com' // для картинок с GitHub
 			},
 			{

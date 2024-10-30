@@ -4,6 +4,7 @@ import {
 	Container,
 	Filters,
 	ProductsGroupList,
+	Stories,
 	TopBar
 } from '@/shared/components/shared';
 import { Title } from '@/shared/components/shared';
@@ -29,6 +30,8 @@ export default async function Home({
 			<TopBar
 				categories={categories.filter(category => category.products.length > 0)}
 			/>
+
+			<Stories />
 
 			<Container className='mt-10 pb-14'>
 				<div className='flex gap-[60px]'>
