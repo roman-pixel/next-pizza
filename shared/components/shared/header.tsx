@@ -33,22 +33,26 @@ export const Header: React.FC<Props> = ({
 	const router = useRouter();
 
 	useEffect(() => {
-		let timeoutId: NodeJS.Timeout;
+		let timeout: NodeJS.Timeout;
+		let toastMessage = '';
 
 		if (searchParams.has('paid')) {
-			timeoutId = setTimeout(() => {
-				toast.success('Заказ оплачён! Информация отправлена на почту');
+			toastMessage = 'Заказ оплачён! Информация отправлена на почту';
+		}
 
-				const newUrl = new URL(window.location.href);
-				newUrl.searchParams.delete('paid');
+		if (searchParams.has('verified')) {
+			toastMessage = 'Почта успешно подтверждена';
+		}
 
-				// Обновляем URL без перезагрузки страницы
-				router.replace(newUrl.toString(), undefined);
+		if (toastMessage) {
+			timeout = setTimeout(() => {
+				router.replace('/');
+				toast.success(toastMessage);
 			}, 200);
 		}
 
 		return () => {
-			clearTimeout(timeoutId);
+			clearTimeout(timeout);
 		};
 	}, []);
 

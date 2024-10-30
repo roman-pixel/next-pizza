@@ -5,7 +5,10 @@ import { hashSync } from 'bcrypt';
 import { cookies } from 'next/headers';
 
 import { prisma } from '@/prisma/prisma-client';
-import { PayOrderTemplate } from '@/shared/components';
+import {
+	PayOrderTemplate,
+	VerificationUserTemplate
+} from '@/shared/components';
 import { CheckoutFormValues } from '@/shared/constants';
 import { createPayment, sendEmail } from '@/shared/lib';
 import { getUserSession } from '@/shared/lib/get-user-session';
@@ -53,7 +56,6 @@ export async function createOrder(data: CheckoutFormValues) {
 		const order = await prisma.order.create({
 			data: {
 				token: cartToken,
-				// userId,
 				fullname: data.firstName + ' ' + data.lastName,
 				email: data.email,
 				phone: data.phone,
@@ -148,6 +150,52 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
 		});
 	} catch (err) {
 		console.error('Error [UPDATE_USER]', err);
+		throw err;
+	}
+}
+
+export async function registerUser(body: Prisma.UserCreateInput) {
+	try {
+		const user = await prisma.user.findFirst({
+			where: {
+				email: body.email
+			}
+		});
+
+		if (user) {
+			if (!user.verified) {
+				throw new Error('Почта не подтверждена');
+			}
+
+			throw new Error('Пользователь уже существует');
+		}
+
+		const createdUser = await prisma.user.create({
+			data: {
+				email: body.email,
+				fullname: body.fullname,
+				password: hashSync(body.password as string, 10)
+			}
+		});
+
+		const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+		await prisma.verificationCode.create({
+			data: {
+				code,
+				userId: createdUser.id
+			}
+		});
+
+		await sendEmail(
+			createdUser.email,
+			`Next Pizza / 📝 Подтверждение регистрации`,
+			VerificationUserTemplate({
+				code
+			})
+		);
+	} catch (err) {
+		console.error('Error [REGISTER_USER]', err);
 		throw err;
 	}
 }
