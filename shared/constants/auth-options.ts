@@ -3,21 +3,34 @@ import { compare, hashSync } from 'bcrypt';
 import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
 import { prisma } from '@/prisma/prisma-client';
 
-// TODO: ADD AUTHENTICATION WITH GOOGLE
 export const authOptions: AuthOptions = {
 	providers: [
 		GitHubProvider({
-			clientId: process.env.GITHUB_ID || '',
-			clientSecret: process.env.GITHUB_SECRET || '',
+			clientId: process.env.GITHUB_CLIENT_ID || '',
+			clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
 			profile(profile) {
 				return {
 					id: profile.id,
 					name: profile.name || profile.login,
 					email: profile.email,
 					image: profile.avatar_url,
+					role: 'USER' as UserRole
+				};
+			}
+		}),
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID || '',
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+			profile(profile) {
+				return {
+					id: profile.sub,
+					name: profile.name,
+					email: profile.email,
+					image: profile.picture,
 					role: 'USER' as UserRole
 				};
 			}
