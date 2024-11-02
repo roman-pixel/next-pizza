@@ -39,6 +39,7 @@ export const ProductCard: React.FC<Props> = ({
 							sizes='100%'
 							src={imageUrl}
 							alt={name}
+							priority
 						/>
 					</div>
 				</div>
